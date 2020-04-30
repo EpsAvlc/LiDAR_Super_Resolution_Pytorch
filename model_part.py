@@ -40,14 +40,13 @@ class Down(nn.Module):
 class Up(nn.Module):
     """Upscaling then double conv"""
 
-    def __init__(self, in_channels, out_channels, bilinear=True):
+    def __init__(self, in_channels, out_channels):
         super().__init__()
-
-            self.up = nn.ConvTranspose2d(in_channels, in_channels, 
-                kernel_size=(3, 3), stride=(2, 1), padding=(1,1), output_padding=(1, 0))
-            self.bn = nn.BatchNorm2d(in_channels)
-            self.relu = nn.ReLU()
-            self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
+        self.up = nn.ConvTranspose2d(in_channels, out_channels, 
+                kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+        self.bn = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU()
+        self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
 
 
     def forward(self, x1, x2):
@@ -55,6 +54,6 @@ class Up(nn.Module):
         x1 = self.relu(self.bn(x1))
         x = torch.cat((x1, x2), dim = 1)
         x = self.conv(x)
-        x = nn.Dropout2d(0.25)
+        x = nn.Dropout2d(0.25)(x)
 
         return x
