@@ -13,6 +13,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <velodyne_pointcloud/point_types.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
@@ -23,27 +24,7 @@ using namespace cv;
 const int kImgHeight = 16;
 const int kImgWidth = 1024;
 
-void writeMatToFile(cv::Mat& m, const char* filename)
-{
-	std::ofstream fout(filename);
- 
-	if (!fout)
-	{
-		std::cout << "File Not Opened" << std::endl;  
-		return;
-	}
- 
-	for (int i = 0; i<m.rows; i++)
-	{
-		for (int j = 0; j<m.cols; j++)
-		{
-			fout << m.at<float>(i, j) << "\t";
-		}
-		fout << std::endl;
-	}
- 
-	fout.close();
-}
+ros::Publisher vlp16_img_pub;
 
 void Callback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
 {
@@ -81,18 +62,21 @@ void Callback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
         float& cur_val = range_img.at<float>(row_index, col_index);
         if(pt.x <  cur_val || cur_val < 0.001f)
         cur_val = pt.x;
-        // cout << cur_val << endl;
     }
     // normalized the image.
     range_img = range_img / 100.f;
-    imshow("range_img", range_img);
-    waitKey(50);
+    cv_bridge::CvImage cv_range_img(point_cloud_msg->header, "32FC1", range_img);
+    sensor_msgs::ImagePtr range_img_msg = cv_range_img.toImageMsg();
+    vlp16_img_pub.publish(range_img_msg);
 }
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "vlp16_to_range_img.cpp");
     ros::NodeHandle nh("");
     ros::Subscriber vlp16_sub = nh.subscribe("/velodyne_points", 1, &Callback);
+
+    vlp16_img_pub = nh.advertise<sensor_msgs::Image>("/vlp16_range_img", 1);
     ros::spin();
     return 0;
+    
 }
