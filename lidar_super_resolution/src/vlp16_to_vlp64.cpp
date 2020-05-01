@@ -83,9 +83,8 @@ void Callback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
         cur_val = pt.x;
         // cout << cur_val << endl;
     }
-    // range_img = range_img / 100.f;
-    normalize(range_img, range_img, 1, 0, NORM_MINMAX);
-    // writeMatToFile(range_img, "/home/cm/Workspaces/SR_ws/src/LiDAR_Super_Resolution_Pytorch/lidar_super_resolution/range_img.txt");
+    // normalized the image.
+    range_img = range_img / 100.f;
     imshow("range_img", range_img);
     waitKey(50);
 }
