@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2
 import os
 import time
-import _thread
+import thread
 import math
 import cv2
 import numpy as np

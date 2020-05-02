@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/python2
 import torch
 import numpy as numpy
 import torch.nn as nn
@@ -8,7 +8,7 @@ class DoubleConv(nn.Module):
     """(convolution => [BN] => ReLU) * 2"""
 
     def __init__(self, in_channels, out_channels, mid_channels=None):
-        super().__init__()
+        super(DoubleConv, self).__init__()
         if not mid_channels:
             mid_channels = out_channels
         self.double_conv = nn.Sequential(
@@ -27,7 +27,7 @@ class Down(nn.Module):
     """Downscaling with maxpool then double conv"""
 
     def __init__(self, in_channels, out_channels):
-        super().__init__()
+        super(Down, self).__init__()
         self.avgpool_conv = nn.Sequential(
             nn.AvgPool2d((2, 2)),
             nn.Dropout2d(0.25),
@@ -41,7 +41,7 @@ class Up(nn.Module):
     """Upscaling then double conv"""
 
     def __init__(self, in_channels, out_channels):
-        super().__init__()
+        super(Up, self).__init__()
         self.up = nn.ConvTranspose2d(in_channels, out_channels, 
                 kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
         self.bn = nn.BatchNorm2d(out_channels)

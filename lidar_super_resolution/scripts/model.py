@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/python2
 import torch
 import numpy as numpy
 import torch.nn as nn
