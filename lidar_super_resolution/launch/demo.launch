@@ -1,6 +1,6 @@
 <launch>
-    <!-- <arg name="bag_path" default="$(find lidar_super_resolution)/bags/small_velo.bag"/> -->
-    <arg name="bag_path" default="/media/cm/ExtCaoMing/datasets/2020-01-13-d.bag"  />
+    <arg name="bag_path" default="$(find lidar_super_resolution)/bags/small_velo.bag"/>
+    <!-- <arg name="bag_path" default="/media/cm/ExtCaoMing/datasets/2020-01-13-d.bag"  /> -->
     <node pkg="rosbag" type="play" name="rosbag" args="$(arg bag_path)" />
     <node pkg="lidar_super_resolution" type="vlp16_to_range_img" name="vlp16_to_range_img" output="screen"/>
     <node pkg="lidar_super_resolution" type="range_img_to_vlp64.py" name="range_img_to_vlp64" output="screen"/>

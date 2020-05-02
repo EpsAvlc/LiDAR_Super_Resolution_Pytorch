@@ -142,3 +142,4 @@ datasets/
 logs/
 models/
 */bags/
+*/__pycache__/
