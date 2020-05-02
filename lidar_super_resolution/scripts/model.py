@@ -53,3 +53,4 @@ if __name__ == "__main__":
     net = UNet()
     null_input = torch.rand((32, 1, 16, 1024))
     net(null_input)
+    print("end")
