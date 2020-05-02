@@ -11,8 +11,9 @@ sys.path.append('/home/caoming/Projects/lidar_SR_ws/src/LiDAR_super_resolution/l
 
 from model import *
 from cv_bridge import CvBridge
-# after import cv_bridge, remove ros's dist-packages to ensure python3.5's OpenCV be imported.
-# sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
+#  after import cv_bridge, remove ros's dist-packages to ensure python3.5's OpenCV be imported.
+import cv2
+sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 class Converter:
 
     def __init__(self):
@@ -21,12 +22,11 @@ class Converter:
         self.model.load_state_dict(torch.load('/home/caoming/Projects/lidar_SR_ws/src/LiDAR_super_resolution/models/sr_99.pkl'))
         self.device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
-        # self.bridge = CvBridge()
-        print("Create bridge")
+        self.bridge = CvBridge()
+        # print("Create bridge")
 
     def callback(self, range_img_msg):
-        bridge = CvBridge()
-        cv_image = bridge.image_to_cv2(range_img_msg, desired_encoding='passthrough')
+        cv_image = self.bridge.image_to_cv2(range_img_msg, desired_encoding='passthrough')
         # print(type(cv_image))
         print(type(range_img_msg))
 

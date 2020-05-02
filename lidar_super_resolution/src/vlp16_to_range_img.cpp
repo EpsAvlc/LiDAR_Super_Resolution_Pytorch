@@ -16,6 +16,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <python3.5m/Python.h>
 
 using namespace std;
 using namespace pcl;
@@ -71,6 +72,8 @@ void Callback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
 }
 
 int main(int argc, char** argv) {
+    // Init python modules.
+    Py_Initialize();     
     ros::init(argc, argv, "vlp16_to_range_img.cpp");
     ros::NodeHandle nh("");
     ros::Subscriber vlp16_sub = nh.subscribe("/velodyne_points", 1, &Callback);
