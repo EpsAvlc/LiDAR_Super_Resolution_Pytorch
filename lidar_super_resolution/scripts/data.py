@@ -41,7 +41,7 @@ print('Sensor view angle:        {} to {}'.format(-ang_start_y, -ang_start_y + a
 print('Range normalize ratio:    {}'.format(normalize_ratio))
 
 # home dir
-project_name = 'lidar_SR_pytorch/datasets'
+project_name = 'lidar_SR_ws/src/LiDAR_super_resolution/datasets'
 home_dir = '/home/caoming'
 root_dir = os.path.join(home_dir, 'Projects', project_name)
 # Check Path exists

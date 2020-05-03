@@ -61,8 +61,8 @@ void Callback(const sensor_msgs::PointCloud2::ConstPtr& point_cloud_msg)
         int row_index = pt.ring; 
 
         float& cur_val = range_img.at<float>(row_index, col_index);
-        if(pt.x <  cur_val || cur_val < 0.001f)
-        cur_val = pt.x;
+        if(r <  cur_val || cur_val < 0.001f)
+        cur_val = r;
     }
     // normalized the image.
     range_img = range_img / 100.f;
